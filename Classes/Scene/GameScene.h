@@ -12,11 +12,11 @@ class GameScene : public Layer {
 public:
 	static Scene * createScene();
 
-	virtual bool init();
+	virtual bool init();  //初始化函数
 
 	CREATE_FUNC(GameScene);
 
-	void menuSpitCallback(Ref * pSender, CheckBox::EventType type);
-	void menuDivideCallback(Ref * pSender, CheckBox::EventType type);
+	void menuSpitCallback(Ref * pSender, CheckBox::EventType type);   //吐孢子回调
+	void menuDivideCallback(Ref * pSender, CheckBox::EventType type);  //分身回调
 };
 #endif
