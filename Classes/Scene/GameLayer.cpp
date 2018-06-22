@@ -1,4 +1,4 @@
-#include "GameLayer.h"
+ #include "GameLayer.h"
 #include "Joystick.h"
 #include "Entity.h"
 #include "Bean.h"
@@ -7,7 +7,7 @@
 #include "Prick.h"
 #include "PlayerDivision.h"
 #include "SceneManager.h"
-enum GameLayerZOrder
+enum GameLayerZOrder   //游戏图层子节点
 {
 	GAME_LAYER_BACKGROUND_Z,
 	GAME_LAYER_MAP_Z,
@@ -22,10 +22,10 @@ GameLayer::GameLayer()
 
 GameLayer::~GameLayer()
 {
-	_rivalMap.clear();
-	_beanList.clear();
-	_sporeMap.clear();
-	_prickMap.clear();
+	_rivalMap.clear();  //清除对手
+	_beanList.clear();  //清除豆子
+	_sporeMap.clear();  //清除孢子
+	_prickMap.clear();  //清除刺
 }
 
 bool GameLayer::init()
@@ -34,13 +34,13 @@ bool GameLayer::init()
 	{
 		return false;
 	}
-
+	/*添加精灵，图层，或其他node到子节点上*/
 	auto colorLayer = LayerColor::create(Color4B(49, 49, 49, 255), DESIGN_SCREEN_WIDTH, DESIGN_SCREEN_HEIGHT);
-	this->addChild(colorLayer, GAME_LAYER_BACKGROUND_Z);
+	this->addChild(colorLayer, GAME_LAYER_BACKGROUND_Z);  //添加游戏背景层
 
 	_map = Node::create();
 	_map->setContentSize(Size(MAP_WIDTH, MAP_HEIGHT));
-	this->addChild(_map, GAME_LAYER_MAP_Z);
+	this->addChild(_map, GAME_LAYER_MAP_Z);  //添加地图
 
 	//initData();
 	initDataDefault();
@@ -48,16 +48,17 @@ bool GameLayer::init()
 	_joystick = Joystick::create("gameScene/base.png", "gameScene/joystick.png");
 	_joystick->setPosition(Vec2::ZERO);
 	_joystick->setVisible(false);
-	this->addChild(_joystick, GAME_LAYER_JOYSTICK_Z);
+	this->addChild(_joystick, GAME_LAYER_JOYSTICK_Z);  //添加虚拟摇杆
 
-	auto listener = EventListenerTouchOneByOne::create();
+
+	auto listener = EventListenerTouchOneByOne::create(); //触摸事件
 	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(GameLayer::onTouchMoved, this);
 	listener->onTouchEnded = CC_CALLBACK_2(GameLayer::onTouchEnded, this);
 	listener->onTouchCancelled = CC_CALLBACK_2(GameLayer::onTouchCancelled, this);
 
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);  //添加监听器接收自定义事件
 
 	this->scheduleUpdate();
 	this->schedule(schedule_selector(GameLayer::updateScore), 1);
@@ -66,7 +67,7 @@ bool GameLayer::init()
 	return true;
 }
 
-bool GameLayer::onTouchBegan(Touch * touch, Event * event)
+bool GameLayer::onTouchBegan(Touch * touch, Event * event)  //触摸事件开始
 {
 	auto position = touch->getLocation();
 
@@ -78,13 +79,13 @@ bool GameLayer::onTouchBegan(Touch * touch, Event * event)
 	return true;
 }
 
-void GameLayer::onTouchMoved(Touch * touch, Event * event)
+void GameLayer::onTouchMoved(Touch * touch, Event * event)  //单点触摸移动
 {
 	_joystick->onTouchMoved(touch, event);
 	_player->setVelocity(_joystick->getVelocity());
 }
 
-void GameLayer::onTouchEnded(Touch * touch, Event * event)
+void GameLayer::onTouchEnded(Touch * touch, Event * event)  //触摸事件结束
 {
 	_joystick->onTouchEnded(touch, event);
 	_joystick->setVisible(false);
@@ -95,24 +96,24 @@ void GameLayer::onTouchEnded(Touch * touch, Event * event)
 	}
 }
 
-void GameLayer::onTouchCancelled(Touch * touch, Event * event)
+void GameLayer::onTouchCancelled(Touch * touch, Event * event)  //触摸事件取消
 {
 	_joystick->onTouchCancelled(touch, event);
 }
 
-void GameLayer::update(float dt)
+void GameLayer::update(float dt) //更新
 {
-	updateBean();
-	updateSpore();
-	updatePrick();
-	_player->updateDivision();
-	//updateRival();        //ÿ�������Ϣ����ҿͻ����Լ�����
-	updateView();
-	collide();
+	updateBean();  //更新豆子
+	updateSpore();  //更新孢子
+	updatePrick();  //更新刺
+	_player->updateDivision();  //更新分身
+	//updateRival();        //每个玩家信息由玩家客户端自己更新
+	updateView();  //更新游戏视图
+	collide();  //碰撞检测
 
 }
 
-void GameLayer::initRival()
+void GameLayer::initRival()  //初始化对手
 {
 	int div[MAP_DIVISION_X * MAP_DIVISIOIN_Y] = { 0 };
 	int mapDivision = MAP_DIVISION_X * MAP_DIVISIOIN_Y;
@@ -158,7 +159,7 @@ void GameLayer::initRival()
 		}
 	}
 }
-void GameLayer::initPlayer()
+void GameLayer::initPlayer()  //初始化玩家
 {
 	float xPosition = rand() % MAP_WIDTH;
 	float yPosition = rand() % MAP_HEIGHT;
@@ -166,7 +167,7 @@ void GameLayer::initPlayer()
 	_player->setLocalZOrder(_player->getTotalScore());
 	_map->addChild(_player);
 }
-void GameLayer::initBean()
+void GameLayer::initBean()  //单机调试
 {
 	for (int i = 0; i < MAP_DIVISIOIN_Y; i++)
 	{
@@ -192,25 +193,25 @@ void GameLayer::initBean()
 	}
 }
 
-void GameLayer::startAddPrick(float dt)
+void GameLayer::startAddPrick(float dt)   
 {
 	this->schedule(schedule_selector(GameLayer::addPrick), 5);
 }
 
-void GameLayer::addPrick(float dt)
+void GameLayer::addPrick(float dt)  //增加绿刺
 {
 	static int id = 0;
 	Prick * prick = Prick::create("gameScene/prick.png");
 	int xPosition = rand() % MAP_WIDTH;
 	int yPosition = rand() % MAP_HEIGHT;
-	prick->setPosition(Vec2(xPosition, yPosition));
+	prick->setPosition(Vec2(xPosition, yPosition));  //放置位置
 	prick->setLocalZOrder(prick->getScore());
-	_map->addChild(prick);
+	_map->addChild(prick);  //添加刺到子节点
 	_prickMap.insert(id, prick);
 	id++;
 }
 
-void GameLayer::updateView()
+void GameLayer::updateView()  //更新游戏视图
 {
 	auto rect = _player->getPlayerRect();
 
@@ -223,8 +224,8 @@ void GameLayer::updateView()
 
 	Vec2 newPosition = Vec2(-dx, -dy);
 
-	_map->setScale(_mapScale);
-	_map->setPosition(newPosition);
+	_map->setScale(_mapScale);  //更新尺寸
+	_map->setPosition(newPosition); //更新位置
 }
 
 void GameLayer::updateBean()
@@ -241,21 +242,21 @@ void GameLayer::updateBean()
 	}
 }
 
-void GameLayer::collideBean(Player * player)
+void GameLayer::collideBean(Player * player)  //与豆子的碰撞检测
 {
 	Rect rect = player->getPlayerRect();
 	Vec2 position = player->getPosition();
 
-	Vec2 point1 = Vec2(rect.origin.x - rect.size.width / 2, rect.origin.y - rect.size.height / 2);//������½�
+	Vec2 point1 = Vec2(rect.origin.x - rect.size.width / 2, rect.origin.y - rect.size.height / 2);//玩家左下角
 	int divisionX1 = floor(point1.x / DESIGN_SCREEN_WIDTH);
 	int divisionY1 = floor(point1.y / DESIGN_SCREEN_HEIGHT);
 	int division1 = divisionY1*MAP_DIVISION_X + divisionX1;
-	Vec2 point2 = Vec2(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);//������Ͻ�
+	Vec2 point2 = Vec2(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);//玩家右上角
 	int divisionX2 = floor(point2.x / DESIGN_SCREEN_WIDTH);
 	int divisionY2 = floor(point2.y / DESIGN_SCREEN_HEIGHT);
 	int division2 = divisionY2*MAP_DIVISION_X + divisionX2;
 
-	//����������������
+	//处理超出界限问题
 	if (divisionX1 < 0)
 	{
 		divisionX1 = 0;
@@ -305,7 +306,7 @@ void GameLayer::collideBean(Player * player)
 	}
 }
 
-void GameLayer::updateSpore()
+void GameLayer::updateSpore()  //更新孢子
 {
 	std::vector<int> vecDel;
 	for (auto sporeItem : _sporeMap)
@@ -314,6 +315,8 @@ void GameLayer::updateSpore()
 		if (spore != NULL)
 		{
 			Vec2 position = spore->getPosition();
+
+			//处理超出界限问题
 			if (position.x<SPORE_RADIUS)
 			{
 				position.x = SPORE_RADIUS;
@@ -357,14 +360,14 @@ void GameLayer::updateSpore()
 	{
 		auto spore = _sporeMap.at(key);
 		_sporeMap.erase(key);
-		spore->removeFromParentAndCleanup(true);
+		spore->removeFromParentAndCleanup(true);   //清除孢子
 	}
 
 	vecDel.clear();
 
 }
 
-void GameLayer::updatePrick()
+void GameLayer::updatePrick()  //更新刺
 {
 	std::vector<int> vecDel;
 	for (auto prickItem : _prickMap)
@@ -401,12 +404,12 @@ void GameLayer::updatePrick()
 	{
 		auto prick = _prickMap.at(key);
 		_prickMap.erase(key);
-		prick->removeFromParentAndCleanup(true);
+		prick->removeFromParentAndCleanup(true);  //清除刺
 	}
 	vecDel.clear();
 }
 
-void GameLayer::updateRival()
+void GameLayer::updateRival()  //更新对手
 {
 	for (auto item : _rivalMap)
 	{
@@ -419,7 +422,7 @@ void GameLayer::updateRival()
 	}
 }
 
-void GameLayer::updateRank(float dt)
+void GameLayer::updateRank(float dt)  //更新排名
 {
 	Vector<Player *> vec;
 	for (auto item : _rivalMap)
@@ -448,16 +451,16 @@ void GameLayer::updateRank(float dt)
 
 }
 
-void GameLayer::updateScore(float dt)
+void GameLayer::updateScore(float dt)  //更新得分
 {
 	int score = _player->getTotalScore();
 
-	_eventDispatcher->dispatchCustomEvent("ScoreChange", &score);
+	_eventDispatcher->dispatchCustomEvent("ScoreChange", &score);  //发送“更新得分”事件
 }
 
 void GameLayer::collide()
 {
-	for (auto item : _rivalMap)        //���������������ֵ���ײ
+	for (auto item : _rivalMap)        //检测玩家与其他对手的碰撞
 	{
 		auto rival = item.second;
 		if (rival != NULL)
@@ -508,29 +511,29 @@ void GameLayer::collide()
 	}*/
 }
 
-void GameLayer::spitSpore()
+void GameLayer::spitSpore()  //吐孢子
 {
 	int sporeCount = _player->countSpitSporeNum();
 
 }
 
-void GameLayer::dividePlayer()
+void GameLayer::dividePlayer()  //玩家分身
 {
 	_player->dividePlayer();
 }
 
-void GameLayer::resetBean(Node * node)
+void GameLayer::resetBean(Node * node)  //重置豆子
 {
 	node->setVisible(true);
 }
 
-void GameLayer::resetPlayer()
+void GameLayer::resetPlayer()  //重置玩家
 {
 
 }
 
 
-void GameLayer::onExit()
+void GameLayer::onExit()  //退出游戏图层
 {
 	this->unscheduleAllCallbacks();
 	Layer::onExit();
