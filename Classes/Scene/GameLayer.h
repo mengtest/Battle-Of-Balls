@@ -8,11 +8,11 @@
 USING_NS_CC;
 using namespace ui;
 
-class Joystick;  //ĞéÄâÒ¡¸Ë
-class Player;   //Íæ¼Ò
-class Bean;  //¶¹×Ó
-class Spore;  //æß×Ó
-class Prick;  //´Ì
+class Joystick;  //è™šæ‹Ÿæ‘‡æ†
+class Player;   //ç©å®¶
+class Bean;  //è±†å­
+class Spore;  //å­¢å­
+class Prick;  //åˆº
 
 class GameLayer : public Layer {
 public:
@@ -23,56 +23,58 @@ public:
 
 	CREATE_FUNC(GameLayer);
 
-	virtual void onExit();  //ÍË³öÓÎÏ·Í¼²ã
-
+	virtual void onExit();  //é€€å‡ºæ¸¸æˆå›¾å±‚
 
 	bool onTouchBegan(Touch * touch, Event * event);
 	void onTouchMoved(Touch * touch, Event * event);
 	void onTouchEnded(Touch * touch, Event * event);
 	void onTouchCancelled(Touch * touch, Event * event);
+	
+	 //é”®ç›˜äº‹ä»¶
+	void keyPressed(EventKeyboard::KeyCode keyCode, Event*event);
+	void keyReleased(EventKeyboard::KeyCode keyCode, Event*event);
 
-	virtual void update(float dt);		//ÓÎÏ·ÖĞÃ¿Ö¡¸üĞÂ
+	virtual void update(float dt);		//æ¸¸æˆä¸­æ¯å¸§æ›´æ–°
 
 
-													/*µ¥»úµ÷ÊÔº¯Êı*/
+													/*å•æœºè°ƒè¯•å‡½æ•°*/
 	void initDataDefault();
 	void initRival();
 	void initPlayer();
 	void initBean();
 
-	void updateView();		//¸üĞÂÓÎÏ·ÊÓÍ¼
-	void updateBean();		//¸üĞÂ¶¹×Ó
-	void updateSpore();		//¸üĞÂæß×Ó
-	void updatePrick();		//¸üĞÂÂÌ´Ì
-	void updateRival();		//¸üĞÂ¶ÔÊÖ
+	void updateView();		//æ›´æ–°æ¸¸æˆè§†å›¾
+	void updateBean();		//æ›´æ–°è±†å­
+	void updateSpore();		//æ›´æ–°å­¢å­
+	void updatePrick();		//æ›´æ–°ç»¿åˆº
+	void updateRival();		//æ›´æ–°å¯¹æ‰‹
 
-	void updateRank(float dt);		//¸üĞÂÅÅĞĞ°ñĞÅÏ¢
-	void updateScore(float dt);		//¸üĞÂ·ÖÊı
+	void updateScore(float dt);		//æ›´æ–°åˆ†æ•°
 
-									/*µ¥»úµ÷ÊÔº¯Êı*/
+									/*å•æœºè°ƒè¯•å‡½æ•°*/
 	void startAddPrick(float dt);
 	void addPrick(float dt);
 
-	void collideBean(Player * player);		//Óë¶¹×ÓµÄÅö×²¼ì²â
-	void collide();			//Åö×²¼ì²â
+	void collideBean(Player * player);		//ä¸è±†å­çš„ç¢°æ’æ£€æµ‹
+	void collide();			//ç¢°æ’æ£€æµ‹
 
-	void spitSpore();		//ÍÂæß×Ó²Ù×÷
-	void dividePlayer();		//·ÖÉí²Ù×÷
-	void resetBean(Node * node);		//ÖØÖÃ¶¹×Ó
+	void spitSpore();		//åå­¢å­æ“ä½œ
+	void dividePlayer();		//åˆ†èº«æ“ä½œ
+	void resetBean(Node * node);		//é‡ç½®è±†å­
 	void resetPlayer();
 
 private:
-	Joystick * _joystick;		//ĞéÄâÒ¡¸Ë
-	Node * _map;				//µØÍ¼
-	Player * _player;			//Íæ¼Ò
-	Map<std::string, Player *> _rivalMap;		//¶ÔÊÖÁĞ±í
-	Vector<Bean *> _beanList;			//¶¹×ÓÁĞ±í
-	Map<int, Prick *> _prickMap;			//ÂÌ´Ì
-	Map<int, Spore *> _sporeMap;			//æß×Ó
-	std::vector<int> _vecSporeNeedUpdate;			//ĞèÒª¸üĞÂµÄæß×Ó
-	float _mapScale;			//µØÍ¼Ëõ·ÅÒò×Ó
-	float _timeCount;  ¼ÆÊ±
-	int _mode;			//ÓÎÏ·Ä£Ê½
+	Joystick * _joystick;		//è™šæ‹Ÿæ‘‡æ†
+	Node * _map;				//åœ°å›¾
+	Player * _player;			//ç©å®¶
+	Map<std::string, Player *> _rivalMap;		//å¯¹æ‰‹åˆ—è¡¨
+	Vector<Bean *> _beanList;			//è±†å­åˆ—è¡¨
+	Map<int, Prick *> _prickMap;			//ç»¿åˆº
+	Map<int, Spore *> _sporeMap;			//å­¢å­
+	std::vector<int> _vecSporeNeedUpdate;			//éœ€è¦æ›´æ–°çš„å­¢å­
+	float _mapScale;			//åœ°å›¾ç¼©æ”¾å› å­
+	float _timeCount;  è®¡æ—¶
+	int _mode;			//æ¸¸æˆæ¨¡å¼
 
 };
 
