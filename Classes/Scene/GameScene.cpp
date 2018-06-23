@@ -1,9 +1,8 @@
-#include "GameScene.h"
+ #include "GameScene.h"
 #include "GameLayer.h"
-//#include"DataLayer.h"
 #include"SceneManager.h"
 
-enum GameZOrder  //ÉèÖÃ³¡¾°×Ó½Úµã
+enum GameZOrder  //è®¾ç½®å­èŠ‚ç‚¹
 {
 	GAME_BACKGROUND_Z,
 	GAME_LAYER_Z,
@@ -12,58 +11,28 @@ enum GameZOrder  //ÉèÖÃ³¡¾°×Ó½Úµã
 	GAME_SETTING_LAYER_Z
 };
 
-Scene * GameScene::createScene()  //´´½¨³¡¾°
+Scene * GameScene::createScene()  //åˆ›å»ºåœºæ™¯
 {
 	auto scene = Scene::create();
 
 	auto layer = GameScene::create();
 
-	scene->addChild(layer);
+	scene->addChild(layer);  //æ·»åŠ å±‚åˆ°å­èŠ‚ç‚¹
 
 	return scene;
 }
 
 
-bool GameScene::init()
+bool GameScene::init()  //åˆå§‹åŒ–å‡½æ•°
 {
 	if (!Layer::init())
 	{
 		return false;
 	}
 
-	/*Ìí¼Ó²ãµ½×Ó½Úµã*/
-	auto spitItem = CheckBox::create(
-		"gameScene/spit_btn.png",
-		"gameScene/spit_btn.png");
-	spitItem->setPosition(Vec2(650, 60));
-	spitItem->setZoomScale(-0.1f);
-	spitItem->addEventListener(CC_CALLBACK_2(GameScene::menuSpitCallback, this));
-	this->addChild(spitItem, GAME_MENU_Z);
-
-	auto divideItem = CheckBox::create(
-		"gameScene/divide_btn.png",
-		"gameScene/divide_btn.png");
-	divideItem->setPosition(Vec2(720, 60));
-	divideItem->setZoomScale(-0.1f);
-	divideItem->addEventListener(CC_CALLBACK_2(GameScene::menuDivideCallback, this));
-	this->addChild(divideItem, GAME_MENU_Z);
-
-
-	//auto dataLayer = DataLayer::create();
-	//this->addChild(dataLayer, GAME_DATA_Z);
 
 	auto gameLayer = GameLayer::create();
-	this->addChild(gameLayer, GAME_LAYER_Z);
+	this->addChild(gameLayer, GAME_LAYER_Z);  //æ·»åŠ æ¸¸æˆå±‚åˆ°å­èŠ‚ç‚¹
 
 	return true;
-}
-
-void GameScene::menuSpitCallback(Ref * pSender, CheckBox::EventType type)  //ÍÂæß×Ó²Ëµ¥»Øµ÷
-{
-	_eventDispatcher->dispatchCustomEvent("Spit");
-}
-
-void GameScene::menuDivideCallback(Ref * pSender, CheckBox::EventType type)  //·ÖÉí²Ëµ¥»Øµ÷
-{
-	_eventDispatcher->dispatchCustomEvent("Divide");
 }
