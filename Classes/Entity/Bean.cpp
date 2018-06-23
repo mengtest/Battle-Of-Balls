@@ -11,7 +11,7 @@ Bean::~Bean()
 
 }
 
-Bean * Bean::create(const std::string& filename)
+Bean * Bean::create(const std::string& filename)//创建豆子
 {
 	Bean * bean = new Bean();
 	if (bean && bean->init(filename))
@@ -35,7 +35,7 @@ bool Bean::init(const std::string& filename)
 
 	Size size = this->getContentSize();
 	float scale = (_radius * 2) / size.width;
-	this->setScale(scale);
+	this->setScale(scale);//根据半径按比例增大
 
 	return true;
 }
