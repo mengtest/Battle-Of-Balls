@@ -42,7 +42,6 @@ bool GameLayer::init()
 	_map->setContentSize(Size(MAP_WIDTH, MAP_HEIGHT));
 	this->addChild(_map, GAME_LAYER_MAP_Z);  //添加地图
 
-	//initData();
 	initDataDefault();
 
 	_joystick = Joystick::create("gameScene/base.png", "gameScene/joystick.png");
@@ -59,10 +58,15 @@ bool GameLayer::init()
 	listener->onTouchCancelled = CC_CALLBACK_2(GameLayer::onTouchCancelled, this);
 
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);  //添加监听器接收自定义事件
-
+	
+	 //键盘控制分裂和吐孢子
+        auto keyboardListener = EventListenerKeyboard::create();
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(GameLayer::keyPressed, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(GameLayer::keyReleased, this);
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+	
 	this->scheduleUpdate();
 	this->schedule(schedule_selector(GameLayer::updateScore), 1);
-	this->schedule(schedule_selector(GameLayer::updateRank), 2);
 
 	return true;
 }
@@ -73,7 +77,6 @@ bool GameLayer::onTouchBegan(Touch * touch, Event * event)  //触摸事件开始
 
 	_joystick->setPosition(position);
 	_joystick->setVisible(true);
-
 	_joystick->onTouchBegan(touch, event);
 
 	return true;
@@ -101,13 +104,39 @@ void GameLayer::onTouchCancelled(Touch * touch, Event * event)  //触摸事件�
 	_joystick->onTouchCancelled(touch, event);
 }
 
+void GameLayer::keyPressed(EventKeyboard::KeyCode keyCode, Event*event) //按下键盘时
+{
+	if (keyCode == EventKeyboard::KeyCode::KEY_S)           //S控制吐孢子
+	{
+		int sporeCount = _player->countSpitSporeNum();
+		_player->spitSpore(_map,_sporeMap);
+	}
+	else if (keyCode == EventKeyboard::KeyCode::KEY_F)       //F控制分裂
+	{
+		_player->dividePlayer();
+	}
+}
+
+void GameLayer::keyReleased(EventKeyboard::KeyCode keyCode, Event*event)  //键盘事件取消
+{
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_S)
+	{
+		CCLOG("S is keyreleased");
+	}
+	else if (keyCode == EventKeyboard::KeyCode::KEY_F)
+	{
+		CCLOG("F is keyreleased");
+	}
+}
+
 void GameLayer::update(float dt) //更新
 {
 	updateBean();  //更新豆子
 	updateSpore();  //更新孢子
 	updatePrick();  //更新刺
 	_player->updateDivision();  //更新分身
-	//updateRival();        //每个玩家信息由玩家客户端自己更新
+	updateRival();        //每个玩家信息由玩家客户端自己更新
 	updateView();  //更新游戏视图
 	collide();  //碰撞检测
 
@@ -167,7 +196,7 @@ void GameLayer::initPlayer()  //初始化玩家
 	_player->setLocalZOrder(_player->getTotalScore());
 	_map->addChild(_player);
 }
-void GameLayer::initBean()  //单机调试
+void GameLayer::initBean()  //初始化豆子
 {
 	for (int i = 0; i < MAP_DIVISIOIN_Y; i++)
 	{
@@ -228,7 +257,7 @@ void GameLayer::updateView()  //更新游戏视图
 	_map->setPosition(newPosition); //更新位置
 }
 
-void GameLayer::updateBean()
+void GameLayer::updateBean()    //更新豆子
 {
 	collideBean(_player);
 
@@ -380,23 +409,6 @@ void GameLayer::updatePrick()  //更新刺
 			{
 				vecDel.push_back(prickItem.first);
 			}
-			/*else
-			{
-			for (auto item : _rivalMap)
-			{
-			auto rival = item.second;
-			if (rival != NULL)
-			{
-			float radius = prick->getRadius();
-
-			if (rival->collidePrick(prick))
-			{
-			vecDel.push_back(prickItem.first);
-			break;
-			}
-			}
-			}
-			}*/
 		}
 	}
 
@@ -416,47 +428,11 @@ void GameLayer::updateRival()  //更新对手
 		auto rival = item.second;
 		if (rival != NULL)
 		{
-			//rival->AI(m_map, m_sporeArray);
 			rival->updateDivision();
 		}
 	}
 }
 
-void GameLayer::updateRank(float dt)  //更新排名
-{
-	Vector<Player *> vec;
-	for (auto item : _rivalMap)
-	{
-		vec.pushBack(item.second);
-	}
-
-	vec.pushBack(_player);
-
-	for (int i = 0; i<vec.size(); i++)
-	{
-		for (int j = vec.size() - 1; j>i; j--)
-		{
-			Player * player1 = vec.at(j);
-			Player * player2 = vec.at(j - 1);
-			float score1 = player1->getTotalScore();
-			float score2 = player2->getTotalScore();
-			if (score1 > score2)
-			{
-				vec.swap(j, j - 1);
-			}
-		}
-	}
-
-	_eventDispatcher->dispatchCustomEvent("RankChange", &vec);
-
-}
-
-void GameLayer::updateScore(float dt)  //更新得分
-{
-	int score = _player->getTotalScore();
-
-	_eventDispatcher->dispatchCustomEvent("ScoreChange", &score);  //发送“更新得分”事件
-}
 
 void GameLayer::collide()
 {
@@ -477,44 +453,6 @@ void GameLayer::collide()
 		}
 
 	}
-
-	/*for (auto item1 : _rivalMap)
-	{
-	auto rival1 = item1.second;
-
-	if (rival1 != NULL)
-	{
-	for (auto item2 : _rivalMap)
-	{
-	auto rival2 = item2.second;
-	if (rival2 != NULL && item1 != item2)
-	{
-	if (rival1->collideRival(rival2))
-	{
-	float rival1DivisionCount = rival1->getDivisionNum();
-	float rival2DivisionCount = rival2->getDivisionNum();
-	if (rival1DivisionCount == 0)
-	{
-	rival1->resetPlayer();
-	break;
-	}
-
-	if (rival2DivisionCount == 0)
-	{
-	rival2->resetPlayer();
-	}
-	}
-	}
-	}
-	}
-
-	}*/
-}
-
-void GameLayer::spitSpore()  //吐孢子
-{
-	int sporeCount = _player->countSpitSporeNum();
-
 }
 
 void GameLayer::dividePlayer()  //玩家分身
