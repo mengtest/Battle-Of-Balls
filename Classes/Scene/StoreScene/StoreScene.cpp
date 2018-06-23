@@ -19,15 +19,23 @@ bool StoreScene::init()
 	{
 		return false;
 	}
-	Size visibleSize = Director::getInstance()->getVisibleSize(); //¶¨ÒåÊÓÍ¼µÄ¿ÉÊÓ»¯³ß´ç
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();   //¶¨ÒåÊÓÍ¼µÄ¿ÉÊÓ»¯Ô­µã
+	Size visibleSize = Director::getInstance()->getVisibleSize(); //å®šä¹‰è§†å›¾çš„å¯è§†åŒ–å°ºå¯¸
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();   //å®šä¹‰è§†å›¾çš„å¯è§†åŒ–åŽŸç‚¹
 
 	auto bg = Sprite::create("public/background.png");
 	bg->setPosition(Vec2(origin.x + visibleSize.width / 2,
 		origin.y + visibleSize.height / 2));
 	this->addChild(bg);
-
-	//·µ»Ø²Ëµ¥Ïî
+	
+	//â€œå•†åº—åŠŸèƒ½å°šæœªå¼€å¯â€
+	MenuItemFont::setFontName("arial");
+	MenuItemFont::setFontSize(40);
+	MenuItemFont*item = MenuItemFont::create("The Store Function Is Not On.");
+	Menu*mn = Menu::create(item, NULL);
+	mn->alignItemsVertically();
+	this->addChild(mn);
+	
+	//è¿”å›žèœå•é¡¹
 	auto backMenuItem = MenuItemImage::create("public/return_btn0.png", "public/return_btn1.png",//Norma instead of Normal for a strange bug
 		CC_CALLBACK_1(StoreScene::menuBackCallback, this));
 	backMenuItem->setPosition(Director::getInstance()->convertToGL(Vec2(visibleSize.width - 121 / 2, visibleSize.height - 38 / 2)));//Size 121*38
