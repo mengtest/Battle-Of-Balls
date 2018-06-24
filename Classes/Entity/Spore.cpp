@@ -11,7 +11,7 @@ Spore::~Spore()
 
 }
 
-Spore * Spore::create(const std::string& filename)
+Spore * Spore::create(const std::string& filename)//创建
 {
 	Spore * spore = new Spore();
 	if (spore && spore->init(filename))
@@ -23,7 +23,7 @@ Spore * Spore::create(const std::string& filename)
 	return nullptr;
 }
 
-bool Spore::init(const std::string& filename)
+bool Spore::init(const std::string& filename)//初始化
 {
 	_skinID = 1;
 	if (!Entity::initWithFile(filename))
@@ -41,7 +41,7 @@ bool Spore::init(const std::string& filename)
 	return true;
 }
 
-Spore * Spore::create(int id)
+Spore * Spore::create(int id)//创建
 {
 	Spore * spore = new Spore();
 	if (spore && spore->init(id))
@@ -53,7 +53,7 @@ Spore * Spore::create(int id)
 	return nullptr;
 }
 
-bool Spore::init(int id)
+bool Spore::init(int id)//初始化
 {
 	_skinID = id;
 	std::string filename = StringUtils::format("public/keyword_%d.png", id);
