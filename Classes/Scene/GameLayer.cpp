@@ -433,6 +433,14 @@ void GameLayer::updateRival()  //更新对手
 	}
 }
 
+void GameLayer::updateScore(float dt)
+{
+	int score = _player->getTotalScore();
+
+	if(score>=100000)
+		SceneManager::getInstance()->changeScene(SceneManager::en_GameOverScene);  //返回到主菜单场景
+
+}
 
 void GameLayer::collide()
 {
