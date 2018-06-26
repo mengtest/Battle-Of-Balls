@@ -49,9 +49,7 @@ public:
 	void updatePrick();		//更新绿刺
 	void updateRival();		//更新对手
 
-	void updateScore(float dt);		//更新分数
-
-									/*单机调试函数*/
+	void updateScore(float dt);		//更新分数								
 	void startAddPrick(float dt);
 	void addPrick(float dt);
 
@@ -75,6 +73,7 @@ private:
 	float _mapScale;			//地图缩放因子
 	float _timeCount;  计时
 	int _mode;			//游戏模式
+	Label * _scoreLabel;           //分数块标签
 
 };
 
