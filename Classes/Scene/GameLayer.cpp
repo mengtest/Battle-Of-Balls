@@ -442,6 +442,27 @@ void GameLayer::updateScore(float dt)
 
 }
 
+void GameLayer::updateScore(float dt)
+{
+	
+	auto scoreBackground = Sprite::create("gameScene/game_scale9.png");
+	scoreBackground->setPosition(73, 433);
+	this->addChild(scoreBackground, 1);
+
+
+	_scoreLabel = Label::createWithTTF("0", "fonts/arial.ttf", 24);
+	_scoreLabel->setAnchorPoint(Vec2(0, 0));
+	_scoreLabel->setPosition(Vec2(20, 420));
+	this->addChild(_scoreLabel, 1);
+
+		int score = (_player->getTotalScore());
+	_scoreLabel->setString(StringUtils::format("score: %d", score));
+	if (score >= 5000) {
+		SceneManager::getInstance()->changeScene(SceneManager::en_GameOverScene);  //返回到主菜单场景
+
+	}
+}
+
 void GameLayer::collide()
 {
 	for (auto item : _rivalMap)        //检测玩家与其他对手的碰撞
