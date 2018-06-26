@@ -433,16 +433,9 @@ void GameLayer::updateRival()  //更新对手
 	}
 }
 
-void GameLayer::updateScore(float dt)
-{
-	int score = _player->getTotalScore();
-
-	if(score>=100000)
-		SceneManager::getInstance()->changeScene(SceneManager::en_GameOverScene);  //返回到主菜单场景
-
 }
 
-void GameLayer::updateScore(float dt)
+void GameLayer::updateScore(float dt)  //分数显示
 {
 	
 	auto scoreBackground = Sprite::create("gameScene/game_scale9.png");
