@@ -431,6 +431,25 @@ void GameLayer::updateRival()  //更新对手
 			rival->updateDivision();
 		}
 	}
+/*	auto rival = rivalItem.second;
+	if (rival != NULL)
+	{
+		rival->updateDivision();
+		if (_player->collideRival(rival))
+		{
+			vecDel.push_back(rivalItem.first);
+		}
+	}
+}
+
+for (auto key : vecDel)
+{
+	auto rival = _rivalMap.at(key);
+	_rivalMap.erase(key);
+	rival->removeFromParentAndCleanup(true);
+}
+vecDel.clear();
+*/
 }
 
 }
