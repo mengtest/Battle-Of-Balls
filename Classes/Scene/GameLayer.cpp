@@ -175,12 +175,12 @@ void GameLayer::initRival()  //初始化对手
 	{
 		int divisionX = i%MAP_DIVISION_X;
 		int divisionY = i / MAP_DIVISION_X;
+	if (j < 0.5*div[i])
+					k = 2;
+				else 
+					k = 3;
 
-		for (int j = 0; j < div[i]; j++)
-		{
-			float positionX = rand() % DESIGN_SCREEN_WIDTH + divisionX*DESIGN_SCREEN_WIDTH;
-			float positionY = rand() % DESIGN_SCREEN_HEIGHT + divisionY*DESIGN_SCREEN_HEIGHT;
-			auto rival = Player::create(Vec2(positionX, positionY), _map);
+				 auto rival = Player::create(Vec2(positionX, positionY), k, _map);
 			rival->setLocalZOrder(rival->getTotalScore());
 			_map->addChild(rival);
 			_rivalMap.insert(StringUtils::format("%d", i * 100 + j), rival);
@@ -192,7 +192,7 @@ void GameLayer::initPlayer()  //初始化玩家
 {
 	float xPosition = rand() % MAP_WIDTH;
 	float yPosition = rand() % MAP_HEIGHT;
-	_player = Player::create(Vec2(xPosition, yPosition), _map);
+	_player = Player::create(Vec2(xPosition, yPosition),1, _map);
 	_player->setLocalZOrder(_player->getTotalScore());
 	_map->addChild(_player);
 }
