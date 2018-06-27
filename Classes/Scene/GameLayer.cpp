@@ -431,8 +431,8 @@ void GameLayer::updateRival()  //更新对手
 			rival->updateDivision();
 		}
 	}
-/*	auto rival = rivalItem.second;
-	if (rival != NULL)
+汽车竞争对手= rivalItem.second
+	如果（对手！= NULL）
 	{
 		rival->updateDivision();
 		if (_player->collideRival(rival))
@@ -449,7 +449,7 @@ for (auto key : vecDel)
 	rival->removeFromParentAndCleanup(true);
 }
 vecDel.clear();
-*/
+
 }
 
 }
