@@ -83,19 +83,20 @@
 
 #### 场景
 - 进入场景（EnterScene）：
-    - 图片淡入淡出动作
-    - 1、加载资源
+    - 1、图片淡入淡出动作
     
     ![] (https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/1.png)
     
-    - 2、实现细节
+    - 实现细节
 ``` C++
 auto fadeIn = FadeIn::create(0.5);   //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡入
 auto fadeOut = FadeOut::create(1.0);  //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡出
 auto callFunc = CallFunc::create(CC_CALLBACK_0(EnterScene::startLoding, this));
 auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺序动作
 ```
-    - 加载资源
+    - 2、资源加载
+    
+    ![] (https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/2.png)
 
 
 
