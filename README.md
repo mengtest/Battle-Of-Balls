@@ -103,7 +103,7 @@
 
 
 
-#### 实体类
+#### 实体
 
 - **Entity类**: 半径和分数的设置和返回
 
@@ -121,10 +121,10 @@
 
 - **球球实体**：
 
-    - 玩家：![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/微笑.png)
+    - 玩家：![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/微笑.png)
 
-    - AI（对手）：![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/大笑.png)
-    ![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/笑哭.png)
+    - AI（对手）：![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/大笑.png)
+    ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/笑哭.png)
 
 - 创建时根据keywordID（关键词）的不同区分玩家和AI
 
@@ -191,10 +191,15 @@ Vec2 newPosition = Vec2(oldPosition.x + divisionVec.x, oldPosition.y + divisionV
 碰到豆子就吃掉。
 
 >bool collideBean(Bean * bean);		//与豆子的碰撞检测
->bool collideSpore(Spore * spore);		//与孢子的碰撞检测	
+
+>bool collideSpore(Spore * spore);		//与孢子的碰撞检测
+
 >bool collidePrick(Prick *prick);		//与绿刺的碰撞检测
+
 >bool collideRival(Player *rival);		//与对手的碰撞检测
+
 >int collideDivision(PlayerDivision * division);		//与对手分身的碰撞
+
 
 ## 场景
 
@@ -215,7 +220,7 @@ auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺
 
    2、资源加载
    
-   ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/2.png)
+   ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/2.jpg)
    
 
    - 实现细节
@@ -236,7 +241,7 @@ void EnterScene::update(float delta)  //更新进度条百分比
 - **主界面（MenuScene）**
 
 - 开始菜单
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/图片1.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/图片1.png)
 
 - 实现细节
 
@@ -264,7 +269,7 @@ if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying() == true)
 - **游戏结束界面（GameOverScene）**
 
 - 功能：①显示输赢         ②返回主界面
-  ![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/lose.png)
+  ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/lose.png)
   
 - 实现细节
 
@@ -280,7 +285,7 @@ MenuItemFont::setFontName("arial");
 - **游戏场景（GameScene）**
 
 - 功能：实时显示游戏进程，主要功能在GameLayer里实现
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/过程.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/过程.png)
 
 
 ## 游戏具体场景
@@ -300,8 +305,8 @@ auto colorLayer = LayerColor::create(Color4B(49, 49, 49, 255), DESIGN_SCREEN_WID
 	this->addChild(_map, GAME_LAYER_MAP_Z);
 ```
 2、设置虚拟摇杆摇杆
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/摇杆1.png)
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/摇杆2.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/摇杆1.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/摇杆2.png)
 
 ```
 auto listener = EventListenerTouchOneByOne::create();
@@ -396,10 +401,10 @@ switch (enSceneType)
 目前只实现了服务端与客户端的简单多线程通信
 
 - **服务端结构**
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/服务区.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/服务区.jpg)
 
 - **客户端结构**
-![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/客户端.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/客户端.jpg)
 
 
 - **实现细节**
