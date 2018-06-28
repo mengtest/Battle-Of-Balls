@@ -25,6 +25,7 @@ public:
 
 	virtual void onExit();  //退出游戏图层
 
+	 //触摸事件
 	bool onTouchBegan(Touch * touch, Event * event);
 	void onTouchMoved(Touch * touch, Event * event);
 	void onTouchEnded(Touch * touch, Event * event);
@@ -37,12 +38,14 @@ public:
 	virtual void update(float dt);		//游戏中每帧更新
 
 
-													/*单机调试函数*/
+													
 	void initDataDefault();
 	void initRival();
 	void initPlayer();
 	void initBean();
-
+	
+	void Guidance(); //新手引导
+	
 	void updateView();		//更新游戏视图
 	void updateBean();		//更新豆子
 	void updateSpore();		//更新孢子
@@ -74,7 +77,7 @@ private:
 	float _timeCount;  计时
 	int _mode;			//游戏模式
 	Label * _scoreLabel;           //分数块标签
-
+	Label * _guidanceLabel;        //新手引导标签
 };
 
 #endif
