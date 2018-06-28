@@ -53,7 +53,6 @@
 - [ ] 实现服务器端：支持局域网联机对战（自由模式），支持多人在同一个地图上游戏
 
 - **拓展功能**
-
 - [x] 支持绿刺
 
 - [x] 支持吐孢子
@@ -84,17 +83,19 @@
 
 #### 场景
 - 进入场景（EnterScene）：
-- - 图片淡入淡出动作
-- - 1、加载资源
-    这里放图！！！！！！！！！
-- - 2、实现细节
+    - 图片淡入淡出动作
+    - 1、加载资源
+    
+    ![] (https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/1.png)
+    
+    - 2、实现细节
 ``` C++
 auto fadeIn = FadeIn::create(0.5);   //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡入
 auto fadeOut = FadeOut::create(1.0);  //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡出
 auto callFunc = CallFunc::create(CC_CALLBACK_0(EnterScene::startLoding, this));
 auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺序动作
 ```
-- - 加载资源
+    - 加载资源
 
 
 
