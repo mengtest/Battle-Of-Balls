@@ -13,15 +13,16 @@ using namespace std;
 #define	SERVERPORT			5555		
 #define	MAX_NUM_BUF			60			
 
-//函数声明
+//鍑芥暟澹版槑
 BOOL InitClient(void);              
-void InitMember(void);              //初始化全局变量
+void InitMember(void);              //鍒濆鍖栧叏灞�鍙橀噺
 BOOL InitSockt(void);               
 BOOL ConnectServer(void);           
 void ExitClient(void);             
 DWORD __stdcall	RecvDataThread(void* pParam);
 DWORD __stdcall	SendDataThread(void* pParam);
 BOOL CreateSendAndRecvThread(void);
+void ShowConnectMsg(BOOL bSuc);     //杩炴帴鎵撳嵃鍑芥暟
 void InputAndOutput(void);
 
 
