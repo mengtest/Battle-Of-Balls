@@ -13,50 +13,51 @@ using namespace std;
 #pragma comment(lib, "ws2_32.lib")			
 
 /**
- * ºê¶¨Òå
+ * å®å®šä¹‰
  */
-#define SERVER_SETUP_FAIL			1		//Æô¶¯¿Í»§¶ËÊ§°Ü
-#define START_SERVER                1       //ÏÔÊ¾¿ªÊ¼ÊäÈëÌáÊ¾
-#define INPUT_DATA                  2       //ÌáÊ¾ÊäÈëÊ²Ã´Êı¾İ
+#define SERVER_SETUP_FAIL			1		//å¯åŠ¨å®¢æˆ·ç«¯å¤±è´¥
+#define START_SERVER                1       //æ˜¾ç¤ºå¼€å§‹è¾“å…¥æç¤º
+#define INPUT_DATA                  2       //æç¤ºè¾“å…¥ä»€ä¹ˆæ•°æ®
 
-#define SERVERPORT			5555			//·şÎñÆ÷TCP¶Ë¿Ú
-#define CONN_NUM            10              //Á¬½Ó¿Í»§¶ËÊıÁ¿
-#define TIMEFOR_THREAD_SLEEP		500		//µÈ´ı¿Í»§¶ËÇëÇóÏß³ÌË¯ÃßÊ±¼ä
-#define TIMEFOR_THREAD_HELP			1500	//ÇåÀí×ÊÔ´Ïß³ÌÍË³öÊ±¼ä
-#define TIMEFOR_THREAD_EXIT			5000	//Ö÷Ïß³ÌË¯ÃßÊ±¼ä
+#define SERVERPORT			5555			//æœåŠ¡å™¨TCPç«¯å£
+#define CONN_NUM            10              //è¿æ¥å®¢æˆ·ç«¯æ•°é‡
+#define TIMEFOR_THREAD_SLEEP		500		//ç­‰å¾…å®¢æˆ·ç«¯è¯·æ±‚çº¿ç¨‹ç¡çœ æ—¶é—´
+#define TIMEFOR_THREAD_HELP			1500	//æ¸…ç†èµ„æºçº¿ç¨‹é€€å‡ºæ—¶é—´
+#define TIMEFOR_THREAD_EXIT			5000	//ä¸»çº¿ç¨‹ç¡çœ æ—¶é—´
 #define WRITE_ALL   "all"                   
-#define WRITE       "write"                 //·¢ËÍ
-#define READ        "read"                  //½ÓÊÕ
+#define WRITE       "write"                 //å‘é€
+#define READ        "read"                  //æ¥æ”¶
 #define READ_ALL    "read all"            
-typedef vector<CClient*> ClIENTVECTOR;		//ÏòÁ¿ÈİÆ÷
-typedef vector<string> SVECTOR;             //ÄÚÈİ×Ö·û
+typedef vector<CClient*> ClIENTVECTOR;		//å‘é‡å®¹å™¨
+typedef vector<string> SVECTOR;             //å†…å®¹å­—ç¬¦
 
 /**
- * È«¾Ö±äÁ¿
+ * å…¨å±€å˜é‡
  */
-extern char	dataBuf[MAX_NUM_BUF];				//Ğ´»º³åÇø
-extern BOOL	bConning;							//Óë¿Í»§¶ËµÄÁ¬½Ó×´Ì¬
-extern BOOL    bSend;                              //·¢ËÍ±ê¼ÇÎ»
-extern BOOL    clientConn;                         //Á¬½Ó¿Í»§¶Ë±ê¼Ç
-extern SOCKET	sServer;							 //·şÎñÆ÷¼àÌıÌ×½Ó×Ö
-extern CRITICAL_SECTION  cs;			            //±£»¤Êı¾İµÄÁÙ½çÇø¶ÔÏó
-extern HANDLE	hAcceptThread;						 //Êı¾İ´¦ÀíÏß³Ì¾ä±ú
-extern HANDLE	hCleanThread;						//Êı¾İ½ÓÊÕÏß³Ì
+extern char	dataBuf[MAX_NUM_BUF];				//å†™ç¼“å†²åŒº
+extern BOOL	bConning;							//ä¸å®¢æˆ·ç«¯çš„è¿æ¥çŠ¶æ€
+extern BOOL    bSend;                              //å‘é€æ ‡è®°ä½
+extern BOOL    clientConn;                         //è¿æ¥å®¢æˆ·ç«¯æ ‡è®°
+extern SOCKET	sServer;							 //æœåŠ¡å™¨ç›‘å¬å¥—æ¥å­—
+extern CRITICAL_SECTION  cs;			            //ä¿æŠ¤æ•°æ®çš„ä¸´ç•ŒåŒºå¯¹è±¡
+extern HANDLE	hAcceptThread;						 //æ•°æ®å¤„ç†çº¿ç¨‹å¥æŸ„
+extern HANDLE	hCleanThread;						//æ•°æ®æ¥æ”¶çº¿ç¨‹
 
 /**
- *º¯ÊıÉêÃ÷
+ *å‡½æ•°ç”³æ˜
  */
-BOOL initSever(void);                       //³õÊ¼»¯
+BOOL initSever(void);                       //åˆå§‹åŒ–
 void initMember(void);
-bool initSocket(void);						  //³õÊ¼»¯·Ç×èÈûÌ×½Ó×Ö
-void exitServer(void);						//ÊÍ·Å×ÊÔ´
-bool startService(void);					//Æô¶¯·şÎñÆ÷
-void inputAndOutput(void);                    //´¦ÀíÊı¾İ
-void showServerStartMsg(BOOL bSuc);          //ÏÔÊ¾´íÎóĞÅÏ¢
-void showServerExitMsg(void);               //ÏÔÊ¾ÍË³öÏûÏ¢
-void handleData(char* str);                  //Êı¾İ´¦Àí
-BOOL createCleanAndAcceptThread(void);      //¿ªÆô¼à¿Øº¯Êı
-DWORD __stdcall acceptThread(void* pParam); //¿ªÆô¿Í»§¶ËÇëÇóÏß³Ì
+bool initSocket(void);						  //åˆå§‹åŒ–éé˜»å¡å¥—æ¥å­—
+void exitServer(void);						//é‡Šæ”¾èµ„æº
+bool startService(void);					//å¯åŠ¨æœåŠ¡å™¨
+void inputAndOutput(void);                    //å¤„ç†æ•°æ®
+void showServerStartMsg(BOOL bSuc);          //æ˜¾ç¤ºé”™è¯¯ä¿¡æ¯
+void showServerExitMsg(void);               //æ˜¾ç¤ºé€€å‡ºæ¶ˆæ¯
+void showTipMsg(int input);          //æ˜¾ç¤ºè¾“å…¥æç¤ºä¿¡æ¯
+void handleData(char* str);                  //æ•°æ®å¤„ç†
+BOOL createCleanAndAcceptThread(void);      //å¼€å¯ç›‘æ§å‡½æ•°
+DWORD __stdcall acceptThread(void* pParam); //å¼€å¯å®¢æˆ·ç«¯è¯·æ±‚çº¿ç¨‹
 DWORD __stdcall cleanThread(void* pParam);
 
 
