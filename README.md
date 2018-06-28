@@ -121,9 +121,10 @@
 
 - **球球实体**：
 
-    - 玩家：贴图
+    - 玩家：![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/微笑.png)
 
-    - AI（对手）：贴图
+    - AI（对手）：![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/大笑.png)
+    ![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/笑哭.png)
 
 - 创建时根据keywordID（关键词）的不同区分玩家和AI
 
@@ -160,8 +161,7 @@ if (_keywordID == 1)//玩家
 	float speed = division->getSpeed();
 	if (_state == State::CONCENTRATE)
 	{
-		speed = PLAYER_CONCENTRATE_SPEED;
-	}
+		speed = PLAYER_CONCENTRATE_SPEED;	}
 	dx = velocity.x*speed;
 	dy = velocity.y*speed;
 }
@@ -202,7 +202,7 @@ Vec2 newPosition = Vec2(oldPosition.x + divisionVec.x, oldPosition.y + divisionV
 
   1、图片淡入淡出动作
   
-![淡入淡出] (https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/1.png)
+   ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/1.png)
     
     - 实现细节
     
@@ -215,7 +215,7 @@ auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺
 
    2、资源加载
    
-![] (https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/2.png)
+   ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/2.png)
    
 
    - 实现细节
@@ -236,7 +236,7 @@ void EnterScene::update(float delta)  //更新进度条百分比
 - **主界面（MenuScene）**
 
 - 开始菜单
-贴图
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/图片1.png)
 
 - 实现细节
 
@@ -264,7 +264,7 @@ if (SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying() == true)
 - **游戏结束界面（GameOverScene）**
 
 - 功能：①显示输赢         ②返回主界面
-  贴图
+  ![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/lose.png)
   
 - 实现细节
 
@@ -280,7 +280,7 @@ MenuItemFont::setFontName("arial");
 - **游戏场景（GameScene）**
 
 - 功能：实时显示游戏进程，主要功能在GameLayer里实现
-贴图
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/过程.png)
 
 
 ## 游戏具体场景
@@ -299,8 +299,9 @@ auto colorLayer = LayerColor::create(Color4B(49, 49, 49, 255), DESIGN_SCREEN_WID
 	_map->setContentSize(Size(MAP_WIDTH, MAP_HEIGHT));
 	this->addChild(_map, GAME_LAYER_MAP_Z);
 ```
-2、设置虚拟摇杆
-贴图1 2
+2、设置虚拟摇杆摇杆
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/摇杆1.png)
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/摇杆2.png)
 
 ```
 auto listener = EventListenerTouchOneByOne::create();
@@ -395,13 +396,11 @@ switch (enSceneType)
 目前只实现了服务端与客户端的简单多线程通信
 
 - **服务端结构**
-贴图
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/服务区.png)
 
 - **客户端结构**
-贴图
+![](https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/客户端.png)
 
-- **效果**
-贴图
 
 - **实现细节**
 
