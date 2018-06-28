@@ -27,7 +27,6 @@
 
 工作量：30%
 
-
 - **PSY**
 
 负责网络通信的实现（未达成）
@@ -83,6 +82,22 @@
 
 ## 游戏系统介绍
 
-### 游戏架构
+#### 场景
+- 进入场景（EnterScene）：
+- - 图片淡入淡出动作
+- - 1、加载资源
+    这里放图！！！！！！！！！
+- - 2、实现细节
+``` C++
+auto fadeIn = FadeIn::create(0.5);   //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡入
+auto fadeOut = FadeOut::create(1.0);  //创建一个FadeIn动作，执行该动作的节点在0.5秒内淡出
+auto callFunc = CallFunc::create(CC_CALLBACK_0(EnterScene::startLoding, this));
+auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺序动作
+```
+- - 加载资源
+
+
+
+ 
 
 
