@@ -3,21 +3,21 @@
 
 
 
- //È«¾Ö±äÁ¿
-char	dataBuf[MAX_NUM_BUF];				//Ğ´»º³åÇø
-BOOL	bConning;							//Óë¿Í»§¶ËµÄÁ¬½Ó×´Ì¬
-BOOL    bSend;                              //·¢ËÍ±ê¼ÇÎ»
-BOOL    clientConn;                         //Á¬½Ó¿Í»§¶Ë±ê¼Ç
-SOCKET	sServer;							//·şÎñÆ÷¼àÌıÌ×½Ó×Ö
-CRITICAL_SECTION  cs;			            //±£»¤Êı¾İµÄÁÙ½çÇø¶ÔÏó
-HANDLE	hAcceptThread;						//Êı¾İ´¦ÀíÏß³Ì¾ä±ú
-HANDLE	hCleanThread;						//Êı¾İ½ÓÊÕÏß³Ì
-ClIENTVECTOR clientvector;                  //´æ´¢×ÓÌ×½Ó×Ö
-SVECTOR recvvector(CONN_NUM, "");           //´æ´¢½ÓÊÕÊı¾İ
+ //å…¨å±€å˜é‡
+char	dataBuf[MAX_NUM_BUF];				//å†™ç¼“å†²åŒº
+BOOL	bConning;							//ä¸å®¢æˆ·ç«¯çš„è¿æ¥çŠ¶æ€
+BOOL    bSend;                              //å‘é€æ ‡è®°ä½
+BOOL    clientConn;                         //è¿æ¥å®¢æˆ·ç«¯æ ‡è®°
+SOCKET	sServer;							//æœåŠ¡å™¨ç›‘å¬å¥—æ¥å­—
+CRITICAL_SECTION  cs;			            //ä¿æŠ¤æ•°æ®çš„ä¸´ç•ŒåŒºå¯¹è±¡
+HANDLE	hAcceptThread;						//æ•°æ®å¤„ç†çº¿ç¨‹å¥æŸ„
+HANDLE	hCleanThread;						//æ•°æ®æ¥æ”¶çº¿ç¨‹
+ClIENTVECTOR clientvector;                  //å­˜å‚¨å­å¥—æ¥å­—
+SVECTOR recvvector(CONN_NUM, "");           //å­˜å‚¨æ¥æ”¶æ•°æ®
 bool flag[CONN_NUM] = {0};
 
 
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 BOOL initSever(void)
 {
   
@@ -30,7 +30,7 @@ BOOL initSever(void)
 }
 
 
- //³õÊ¼»¯È«¾Ö±äÁ¿
+ //åˆå§‹åŒ–å…¨å±€å˜é‡
 void initMember(void)
 {
 	InitializeCriticalSection(&cs);				           
@@ -45,7 +45,7 @@ void initMember(void)
 }
 
 
-  //³õÊ¼»¯SOCKET
+  //åˆå§‹åŒ–SOCKET
 bool initSocket(void)
 {
 	
@@ -64,7 +64,7 @@ bool initSocket(void)
 	if (SOCKET_ERROR == reVal)
 		return FALSE;
 
-	//°ó¶¨Ì×½Ó×Ö
+	//ç»‘å®šå¥—æ¥å­—
 	sockaddr_in serAddr;
 	serAddr.sin_family = AF_INET;
 	serAddr.sin_port = htons(SERVERPORT);
@@ -73,7 +73,7 @@ bool initSocket(void)
 	if(SOCKET_ERROR == reVal )
 		return FALSE;
 
-	//¼àÌı
+	//ç›‘å¬
 	reVal = listen(sServer, CONN_NUM);
 	if(SOCKET_ERROR == reVal)
 		return FALSE;
@@ -82,13 +82,13 @@ bool initSocket(void)
 }
 
 
-// Æô¶¯·şÎñ
+// å¯åŠ¨æœåŠ¡
  
 bool startService(void)
 {
-    BOOL reVal = TRUE;	//·µ»ØÖµ
+    BOOL reVal = TRUE;	//è¿”å›å€¼
 
-	showTipMsg(START_SERVER);	//ÌáÊ¾ÓÃ»§ÊäÈë
+	showTipMsg(START_SERVER);	//æç¤ºç”¨æˆ·è¾“å…¥
 
 	char cInput;		
 	do
@@ -96,7 +96,7 @@ bool startService(void)
 		cin >> cInput;
 		if ('s' == cInput || 'S' == cInput)
 		{
-			if (createCleanAndAcceptThread())	//½ÓÊÜ¿Í»§¶ËÇëÇóµÄÏß³Ì
+			if (createCleanAndAcceptThread())	//æ¥å—å®¢æˆ·ç«¯è¯·æ±‚çš„çº¿ç¨‹
 			{
 				showServerStartMsg(TRUE);		
 			}else{
@@ -109,21 +109,21 @@ bool startService(void)
 
 	} while(cInput != 's' && cInput != 'S'); 
 
-    cin.sync();                     //Çå¿ÕÊäÈë»º³åÇø
+    cin.sync();                     //æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
 
 	return reVal;
 
 }
 
 
- //²úÉúÇåÀí×ÊÔ´ºÍ½ÓÊÜ¿Í»§¶ËÁ¬½ÓÏß³Ì
+ //äº§ç”Ÿæ¸…ç†èµ„æºå’Œæ¥å—å®¢æˆ·ç«¯è¿æ¥çº¿ç¨‹
 BOOL createCleanAndAcceptThread(void)
 {
-    bConning = TRUE;//ÉèÖÃ·şÎñÆ÷ÎªÔËĞĞ×´Ì¬
+    bConning = TRUE;//è®¾ç½®æœåŠ¡å™¨ä¸ºè¿è¡ŒçŠ¶æ€
 
-	//´´½¨ÊÍ·Å×ÊÔ´Ïß³Ì
+	//åˆ›å»ºé‡Šæ”¾èµ„æºçº¿ç¨‹
 	unsigned long ulThreadId;
-	//´´½¨½ÓÊÕ¿Í»§¶ËÇëÇóÏß³Ì
+	//åˆ›å»ºæ¥æ”¶å®¢æˆ·ç«¯è¯·æ±‚çº¿ç¨‹
 	hAcceptThread = CreateThread(NULL, 0, acceptThread, NULL, 0, &ulThreadId);
 	if( NULL == hAcceptThread)
 	{
@@ -134,7 +134,7 @@ BOOL createCleanAndAcceptThread(void)
     {
 		CloseHandle(hAcceptThread);
 	}
-	//´´½¨½ÓÊÕÊı¾İÏß³Ì
+	//åˆ›å»ºæ¥æ”¶æ•°æ®çº¿ç¨‹
 	hCleanThread = CreateThread(NULL, 0, cleanThread, NULL, 0, &ulThreadId);
 	if( NULL == hCleanThread)
 	{
@@ -148,14 +148,14 @@ BOOL createCleanAndAcceptThread(void)
 }
 
 
-//½ÓÊÜ¿Í»§¶ËÁ¬½Ó
+//æ¥å—å®¢æˆ·ç«¯è¿æ¥
  
 DWORD __stdcall acceptThread(void* pParam)
 {
-    SOCKET  sAccept;							                        //½ÓÊÜ¿Í»§¶ËÁ¬½ÓµÄÌ×½Ó×Ö
-	sockaddr_in addrClient;						                        //¿Í»§¶ËSOCKETµØÖ·
+    SOCKET  sAccept;							                        //æ¥å—å®¢æˆ·ç«¯è¿æ¥çš„å¥—æ¥å­—
+	sockaddr_in addrClient;						                        //å®¢æˆ·ç«¯SOCKETåœ°å€
 
-	while(bConning)						                                //·şÎñÆ÷µÄ×´Ì¬
+	while(bConning)						                                //æœåŠ¡å™¨çš„çŠ¶æ€
 	{
 		memset(&addrClient, 0, sizeof(sockaddr_in));					
 		int	lenClient = sizeof(sockaddr_in);				        	
@@ -170,16 +170,16 @@ DWORD __stdcall acceptThread(void* pParam)
 			}
 			else
             {
-				return 0;                                               //Ïß³ÌÍË³ö
+				return 0;                                               //çº¿ç¨‹é€€å‡º
 			}
 
 		}
-		else//½ÓÊÜ¿Í»§¶ËµÄÇëÇó
+		else//æ¥å—å®¢æˆ·ç«¯çš„è¯·æ±‚
 		{
 		    clientConn = TRUE;          
 		    CClient *pClient = new CClient(sAccept, addrClient);
 		    EnterCriticalSection(&cs);
-            //ÏÔÊ¾¿Í»§¶ËµÄIPºÍ¶Ë¿Ú
+            //æ˜¾ç¤ºå®¢æˆ·ç«¯çš„IPå’Œç«¯å£
             char *pClientIP = inet_ntoa(addrClient.sin_addr);
             u_short  clientPort = ntohs(addrClient.sin_port);
             cout<<"Accept a client IP: "<<pClientIP<<"\tPort: "<<clientPort<<endl;
@@ -189,23 +189,23 @@ DWORD __stdcall acceptThread(void* pParam)
             pClient->StartRuning();
 		}
 	}
-	return 0;//Ïß³ÌÍË³ö
+	return 0;//çº¿ç¨‹é€€å‡º
 }
 
 
-//ÇåÀí×ÊÔ´Ïß³Ì
+//æ¸…ç†èµ„æºçº¿ç¨‹
 DWORD __stdcall cleanThread(void* pParam)
  {
     while (bConning)                  
 	{
-		EnterCriticalSection(&cs);//½øÈëÁÙ½çÇø
+		EnterCriticalSection(&cs);//è¿›å…¥ä¸´ç•ŒåŒº
 
-		//ÇåÀíÒÑ¾­¶Ï¿ªµÄÁ¬½Ó¿Í»§¶ËÄÚ´æ¿Õ¼ä
+		//æ¸…ç†å·²ç»æ–­å¼€çš„è¿æ¥å®¢æˆ·ç«¯å†…å­˜ç©ºé—´
 		ClIENTVECTOR::iterator iter = clientvector.begin();
 		for (iter; iter != clientvector.end();)
 		{
 			CClient *pClient = (CClient*)*iter;
-			if (!pClient->IsConning())			//¿Í»§¶ËÏß³ÌÒÑ¾­ÍË³ö
+			if (!pClient->IsConning())			//å®¢æˆ·ç«¯çº¿ç¨‹å·²ç»é€€å‡º
 			{
 				clientvector.erase(iter);	
 				delete pClient;				
@@ -219,16 +219,16 @@ DWORD __stdcall cleanThread(void* pParam)
             clientConn = FALSE;
         }
 
-		LeaveCriticalSection(&cs);          //Àë¿ªÁÙ½çÇø
+		LeaveCriticalSection(&cs);          //ç¦»å¼€ä¸´ç•ŒåŒº
 
 		Sleep(TIMEFOR_THREAD_HELP);
 	}
 
 
-	//·şÎñÆ÷Í£Ö¹¹¤×÷
+	//æœåŠ¡å™¨åœæ­¢å·¥ä½œ
 	if (!bConning)
 	{
-		//¶Ï¿ªÃ¿¸öÁ¬½Ó,Ïß³ÌÍË³ö
+		//æ–­å¼€æ¯ä¸ªè¿æ¥,çº¿ç¨‹é€€å‡º
 		EnterCriticalSection(&cs);
 		ClIENTVECTOR::iterator iter = clientvector.begin();
 		for (iter; iter != clientvector.end();)
@@ -241,21 +241,21 @@ DWORD __stdcall cleanThread(void* pParam)
 			}
 			++iter;
 		}
-		//Àë¿ªÁÙ½çÇø
+		//ç¦»å¼€ä¸´ç•ŒåŒº
 		LeaveCriticalSection(&cs);
 
-		//¸øÁ¬½Ó¿Í»§¶ËÏß³ÌÊ±¼ä£¬Ê¹Æä×Ô¶¯ÍË³ö
+		//ç»™è¿æ¥å®¢æˆ·ç«¯çº¿ç¨‹æ—¶é—´ï¼Œä½¿å…¶è‡ªåŠ¨é€€å‡º
 		Sleep(TIMEFOR_THREAD_HELP);
 	}
 
-	clientvector.clear();		//Çå¿ÕÁ´±í
+	clientvector.clear();		//æ¸…ç©ºé“¾è¡¨
 	clientConn = FALSE;
 
 	return 0;
  }
 
 
- //´¦ÀíÊı¾İ
+ //å¤„ç†æ•°æ®
  void inputAndOutput(void)
  {
     char sendBuf[MAX_NUM_BUF];
@@ -273,12 +273,12 @@ DWORD __stdcall cleanThread(void* pParam)
 
 
 
-//Ñ¡ÔñÄ£Ê½´¦ÀíÊı¾İ
+//é€‰æ‹©æ¨¡å¼å¤„ç†æ•°æ®
  void handleData(char* str)
  {
     CClient *sClient ;
     string recvsting;
-    char cnum;                //ÏÔÊ¾¼¸ºÅ×ÖÌ×½Ó×Ö
+    char cnum;                //æ˜¾ç¤ºå‡ å·å­—å¥—æ¥å­—
     int num;
 
     if(str != NULL)
@@ -292,12 +292,12 @@ DWORD __stdcall cleanThread(void* pParam)
           
             if(num<clientvector.size())
             {
-                sClient = clientvector.at(num);     //·¢ËÍµ½Ö¸¶¨¿Í»§¶Ë
+                sClient = clientvector.at(num);     //å‘é€åˆ°æŒ‡å®šå®¢æˆ·ç«¯
                 strcpy_s(dataBuf, str);
                 sClient->IsSend();
                 LeaveCriticalSection(&cs);
             }
-            else                                    //²»ÔÚ·¶Î§
+            else                                    //ä¸åœ¨èŒƒå›´
             {
                 cout<<"The client isn't in scope!"<<endl;
                 LeaveCriticalSection(&cs);
@@ -328,30 +328,40 @@ DWORD __stdcall cleanThread(void* pParam)
  }
 
 
-  //ÊÍ·Å×ÊÔ´
+  //é‡Šæ”¾èµ„æº
 
 void  exitServer(void)
 {
-	closesocket(sServer);					//¹Ø±ÕSOCKET
-	WSACleanup();							//Ğ¶ÔØWindows Sockets DLL
+	closesocket(sServer);					//å…³é—­SOCKET
+	WSACleanup();							//å¸è½½Windows Sockets DLL
 }
 
 void showTipMsg(int input)
 {
     EnterCriticalSection(&cs);
-	if (START_SERVER == input)          //Æô¶¯·şÎñÆ÷
+	if (START_SERVER == input)          //å¯åŠ¨æœåŠ¡å™¨
 	{
+		cout << "**********************" << endl;
+		cout << "s(S): å¯åŠ¨" << endl;
+		cout << "e(E): é€€å‡º" << endl;
+		cout << "**********************" << endl;
 		cout << "Please input:" ;
 	}
 	else if(INPUT_DATA == input)
     {
+		cout << "**************************" << endl;
+		cout << "write+num+dataï¼šå•å‘" << endl;
+		cout << "all+data: å¹¿æ’­" << endl;
+		cout << "e(E): é€€å‡º" << endl;
+		cout << "**************************" << endl;
 		cout << "Please input:" <<endl;
     }
 	 LeaveCriticalSection(&cs);
 }
 
 
-//ÏÔÊ¾Æô¶¯·şÎñÆ÷³É¹¦ÓëÊ§°ÜÏûÏ¢
+
+//æ˜¾ç¤ºå¯åŠ¨æœåŠ¡å™¨æˆåŠŸä¸å¤±è´¥æ¶ˆæ¯
 void  showServerStartMsg(BOOL bSuc)
 {
 	if (bSuc)
@@ -363,7 +373,7 @@ void  showServerStartMsg(BOOL bSuc)
 }
 
 
-//·şÎñÆ÷ÍË³öÏûÏ¢
+//æœåŠ¡å™¨é€€å‡ºæ¶ˆæ¯
 void  showServerExitMsg(void)
 {
 	cout << "* Server exit...     *" << endl;
