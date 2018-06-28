@@ -201,8 +201,8 @@ Vec2 newPosition = Vec2(oldPosition.x + divisionVec.x, oldPosition.y + divisionV
 - **进入场景（EnterScene)**
 
   1、图片淡入淡出动作
-    
-    ![] (https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/1.png)
+  
+![淡入淡出] (https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/1.png)
     
     - 实现细节
     
@@ -214,8 +214,9 @@ auto seq = Sequence::create(fadeIn, fadeOut, callFunc, NULL);  //创建一个顺
 ```
 
    2、资源加载
-
- ![] (https://github.com/Psymiao/Battle-Of-Balls/tree/master/截图/2.png)
+   
+![] (https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/2.png)
+   
 
    - 实现细节
    
@@ -286,6 +287,7 @@ MenuItemFont::setFontName("arial");
 
 - **游戏层**
 
+
 1.添加精灵，图层，或其他node到子节点上
 
 ```
@@ -328,15 +330,22 @@ if (keyCode == EventKeyboard::KeyCode::KEY_S)  //S键控制球球吐孢子
 4、更新
 
 >void updateView();		//更新游戏视图
+
 >void updateBean();		//更新豆子
+
 >void updateSpore();		//更新孢子
+
 >void updatePrick();		//更新绿刺
+
 >void updateRival();		//更新对手
+
 >void updateScore(float dt)； //更新分数
+
 
 5、吐孢子&分身
 
 >void spitSpore();		//吐孢子操作
+
 >void dividePlayer();		//分身操作
 
 - **游戏场景(GameScene)**
