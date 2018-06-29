@@ -362,6 +362,7 @@ Scene * GameScene::createScene()  //创建场景
 auto scene = Scene::create();
 auto layer = GameScene::create();
 scene->addChild(layer);  //添加层到子节点
+
 return scene;
 }
 ```
@@ -401,9 +402,11 @@ switch (enSceneType)
 目前只实现了服务端与客户端的简单多线程通信
 
 - **服务端结构**
+
 ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/服务区.jpg)
 
 - **客户端结构**
+
 ![](https://github.com/Psymiao/Battle-Of-Balls/raw/master/截图/客户端.jpg)
 
 
