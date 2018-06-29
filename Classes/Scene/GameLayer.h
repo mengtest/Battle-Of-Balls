@@ -2,7 +2,6 @@
 #define _GameLayer_H_
 
 #include "cocos2d.h"
-#include "Common.h"
 #include "ui/CocosGUI.h"
 
 USING_NS_CC;
@@ -74,7 +73,7 @@ private:
 	Map<int, Spore *> _sporeMap;			//孢子
 	std::vector<int> _vecSporeNeedUpdate;			//需要更新的孢子
 	float _mapScale;			//地图缩放因子
-	float _timeCount;  计时
+	float _timeCount; //计时
 	int _mode;			//游戏模式
 	Label * _scoreLabel;           //分数块标签
 	Label * _guidanceLabel;        //新手引导标签
